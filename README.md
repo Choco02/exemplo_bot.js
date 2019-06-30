@@ -9,7 +9,7 @@ exports.run = (client, message, args) => {
 /********************/
 exports.config = {
     name: 'nomeDoComando',
-    aliases: ['alternativas']
+    aliases: ['nomeDoComando', 'alternativas']
 }
 // ↑ Como é handler com aliases, tem que ter sempre essa parte acima em todo comando
 
