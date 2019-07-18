@@ -8,6 +8,7 @@ exports.run = (client, message, args) => {
     let mention = message.mentions.members.first()
     let member = mention? mention: message.guild.members.get(args[0])
 
+    if (!member) return message.channel.send(`\`❌\`| Usuário não encontrado`)
     if (member.kickable) return message.channel.send('Não posso kickar esse membro!')
     member.kick()
         .then(m => message.reply(`\`✅\`| ${m.user.tag}/ <@${m.user.id}> foi kickado do server!`).delete(5000))
