@@ -2,14 +2,16 @@ const Discord = require("discord.js")
 const client = new Discord.Client()
 const config = require("./config.json")
 const fs = require('fs')
+let Cake
 
-client.on("ready", () => {
+client.on("ready", async () => {
     console.log(`Estou funcionando ♡ e conheço ${client.users.size} usuários`)
+    Cake = await client.fetchUser('551658291474989076')
     //client.user.setActivity(`Estou em ${client.guilds.size} servidores e conheço ${client.users.size} pessoas ♡`)
     const activity = [
                     {name: `Estou em ${client.guilds.size} servidores e conheço ${client.users.size} pessoas ♡`, type: 1, url: "https://www.twitch.tv/cellbit"},
                     {name: `Dancin Krono Remix 🎧`, type: 2/*, url: "https://www.twitch.tv/cellbit"*/},
-                    {name: `Fui criada por ${client.users.get('551658291474989076').tag}`, type: 1, url: "https://www.twitch.tv/cellbit"}]
+                    {name: `Fui criada por ${Cake.tag}`, type: 1, url: "https://www.twitch.tv/cellbit"}]
     
     setInterval(function() {
         let random = Math.floor(Math.random() * activity.length)
@@ -20,11 +22,11 @@ client.on("ready", () => {
 
 client.on('message', async message => {
     if (message.author.bot) return
-    if (message.channel.type === 'dm') return
+    if (message.channel.type == 'dm') return
     let member = message.mentions.members.first()
-    if (member) 
+    if (member)
         if (member.id == `${client.user.id}`)
-            message.channel.send(`Oiin eu sou a Chocola ♡, uma bot kawaii criada por \`${client.users.get('551658291474989076').tag}\`. \nUse \`c.help\` para ver meus comandos \`^3^\``)
+            message.channel.send(`Oiin eu sou a Chocola ♡, uma bot kawaii criada por \`${Cake.tag}\`. \nUse \`c.help\` para ver meus comandos \`^3^\``)
         
     if (!message.content.startsWith(config.prefix)) return
     
