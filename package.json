@@ -11,6 +11,7 @@
   "scripts": {
     "test": "node ."
   },
-  "author": "Discord ID: 551658291474989076",
+  "author": "Discord ID: 551658291474989076, https://github.com/Choco02/exemplo_bot.js",
+  "avisos":"apenas os comandos no github foram feitos pel mesmo, qualquer outro comando presente nesse código nao é de responsabilidade do dev do repo",
   "license": "ISC"
 }
