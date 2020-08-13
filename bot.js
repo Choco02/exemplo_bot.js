@@ -5,11 +5,11 @@ const fs = require('fs')
 let Cake
 
 client.on("ready", async () => {
-    console.log(`Estou funcionando ♡ e conheço ${client.users.size} usuários`)
-    Cake = await client.fetchUser('551658291474989076')
+    console.log(`Estou funcionando ♡ e conheço ${client.users.cache.size} usuários`)
+    Cake = await client.users.fetch('551658291474989076')
     //client.user.setActivity(`Estou em ${client.guilds.size} servidores e conheço ${client.users.size} pessoas ♡`)
     const activity = [
-                    {name: `Estou em ${client.guilds.size} servidores e conheço ${client.users.size} pessoas ♡`, type: 1, url: "https://www.twitch.tv/cellbit"},
+                    {name: `Estou em ${client.guilds.cache.size} servidores e conheço ${client.users.cache.size} pessoas ♡`, type: 1, url: "https://www.twitch.tv/cellbit"},
                     {name: `Dancin Krono Remix 🎧`, type: 2/*, url: "https://www.twitch.tv/cellbit"*/},
                     {name: `Fui criada por ${Cake.tag}`, type: 1, url: "https://www.twitch.tv/cellbit"}]
     

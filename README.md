@@ -1,3 +1,4 @@
+# Atualizado para discord.js v12, reportar caso encontre erros
 ## Todos os comandos devem estar dentro da pasta *commands* e seguindo o modelo
 
 ```js

@@ -6,9 +6,9 @@ exports.run = (client, message, args) => {
     if (!args[0]) return message.channel.send('Se usa assim \`kick @mention\` ou \`kick ID\`')
 
     let mention = message.mentions.members.first()
-    let member = mention? mention: message.guild.members.get(args[0])
+    let member = mention? mention: message.guild.members.cache.get(args[0])
 
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
     if (!member) return message.channel.send(embed
         .setColor('#f00000')
         .setDescription(`\`❌\`| Usuário não encontrado`))
@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
     member.kick()
         .then(m => message.reply(embed
             .setColor('#00ff95')
-            .setDescription(`\`✅\`| ${m.user.tag}/ <@${m.user.id}> foi kickado do server!`)).delete(5000))
+            .setDescription(`\`✅\`| ${m.user.tag}/ <@${m.user.id}> foi kickado do server!`)).delete({timeout: 5000}))
 
         .catch(() => message.channel.send(embed
             .setDescription(`\`❌\`| Erro ao kickar usuário`)))

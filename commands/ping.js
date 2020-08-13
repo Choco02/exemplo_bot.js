@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
 
 exports.run = (client, message, args) => {
-    const embed = new Discord.RichEmbed()
-    .setDescription(`Estou com ${Math.floor(client.ping)} de ping!`)
+    const embed = new Discord.MessageEmbed()
+    .setDescription(`Estou com ${Math.floor(client.ws.ping)} de ping!`)
 
     message.channel.send(embed)
 }
