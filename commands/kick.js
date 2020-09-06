@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
         .setColor('#f00000')
         .setDescription(`\`❌\`| Usuário não encontrado`))
     
-    if (member.kickable) return message.channel.send(embed
+    if (!member.kickable) return message.channel.send(embed
         .setColor('#f00000')
         .setDescription('Não posso kickar esse membro!'))
     
