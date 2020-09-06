@@ -6,9 +6,9 @@ exports.run = (client, message, args) => {
     const embed = new Discord.MessageEmbed()
         .setColor('#42a1f5')
         .setImage(Member.user.displayAvatarURL({
-            fomat: 'png',
+            format: 'png',
             dynamic: true,
-            size: 2048
+            size: 4096
         }))
     
     if (!args[0]) return message.channel.send(embed.setTitle(message.author.tag))
