@@ -4,7 +4,7 @@ exports.run = (client, message, args) => {
 
     const moment = require('moment')
     moment.locale("pt-BR")
-    let online = message.guild.members.cache.cache.filter(a => a.presence.status == "online").size;
+    let online = message.guild.members.cache.filter(a => a.presence.status == "online").size;
     let ocupado = message.guild.members.cache.filter(a => a.presence.status == "dnd").size;
     let ausente = message.guild.members.cache.filter(a => a.presence.status == "idle").size;
     let offline = message.guild.members.cache.filter(a => a.presence.status == "offline").size;
