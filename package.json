@@ -5,7 +5,8 @@
   "main": "bot.js",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "superagent": "^6.1.0"
   },
   "devDependencies": {},
   "scripts": {
