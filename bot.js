@@ -1,8 +1,11 @@
 const { Client, Collection } = require("discord.js")
 const client = new Client()
 const config = require("./config.json")
-const { readdirSync } = require('fs')
+const { readdirSync, readFileSync, writeFileSync } = require('fs')
+if (!readdirSync('./').includes('muted.json')) writeFileSync('./muted.json', '{}')
+const muteManager = require('./muteManager')
 let Cake
+const githubUrl = "github.com/Choco02/exemplo_bot.js"
 
 client.commands = new Collection()
 client.aliases = new Collection()
@@ -28,16 +31,50 @@ function loadCommands() {
     */
 }
 
+function muteCheck() {
+    const muted = JSON.parse(readFileSync('./muted.json'))
+    //console.log(muted)
+    const guilds = Object.keys(muted)
+    // console.log(guilds)
+    const entries = Object.entries(muted)
+    //console.log(entries)
+    //console.log(entries[0][0])
+    
+    guilds.forEach(g => {
+        console.log(g)
+        // console.log(muted[g])
+        muted[g].forEach(async user => {
+            // console.log(user)
+            if (Date.now() > user.time) {
+                console.log('Mute desse usuario ja terminou')
+                try {
+                    const guild = client.guilds.cache.get(g)
+                    const member = await guild.members.fetch(user)
+                    await member.roles.remove(guild.roles.cache.find(r => r.name === "Mute 🤡"))
+                    await guild.channels.cache.get(user.channel).send(`${member} desmutado`)
+                    muteManager.muteDelete(g, user.user)
+                }
+                catch(err) {
+                    console.log(err.stack)
+                }
+            }
+
+        })
+    })
+}
+
 client.on("ready", async () => {
     Cake = await client.users.fetch('551658291474989076')
-    console.log(`Estou online ♡ e conheço ${client.users.cache.size} usuários`)
+    console.log(`${client.user.tag} online`)
     console.log(`Código original criado por ${Cake.tag}`)
     console.log('-'.repeat(30))
     //client.user.setActivity(`Estou em ${client.guilds.size} servidores e conheço ${client.users.size} pessoas ♡`)
     const activity = [
-                    {name: `Estou em ${client.guilds.cache.size} servidores e conheço ${client.users.cache.size} pessoas ♡`, type: 1, url: "https://www.twitch.tv/cellbit"},
+                    {name: `Estou em ${client.guilds.cache.size} servidores`, type: 1, url: "https://www.twitch.tv/cellbit"},
                     {name: `Dancin Krono Remix 🎧`, type: 2/*, url: "https://www.twitch.tv/cellbit"*/},
-                    {name: `Fui criada por ${Cake.tag}`, type: 1, url: "https://www.twitch.tv/cellbit"}]
+                    {name: `Codigo original criado por ${Cake.tag}`, type: 1, url: "https://www.twitch.tv/cellbit"},
+                    {name: githubUrl, type: 2}
+                ]
     
     setInterval(function() {
         let random = Math.floor(Math.random() * activity.length)
@@ -45,6 +82,7 @@ client.on("ready", async () => {
     }, 15000)
 
     loadCommands()
+    setInterval(muteCheck, 30 * 1000)
 })
 
 
@@ -53,7 +91,7 @@ client.on('message', async message => {
     if (message.channel.type == 'dm') return
     const mention = message.mentions.members.first()
     if (mention && mention.id == client.user.id)
-        message.channel.send(`Oiin eu sou a Chocola ♡, uma bot kawaii criada por \`${Cake.tag}\`. \nUse \`${config.prefix}help\` para ver meus comandos \`^3^\``)
+        message.channel.send(`*Use \`${config.prefix}help\` para ver meus comandos*`)
         
     if (!message.content.startsWith(config.prefix)) return
     
