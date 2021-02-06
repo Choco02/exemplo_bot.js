@@ -1,5 +1,9 @@
 const muteManager = require('../muteManager')
+const { muteEnabled } = require('../config.json')
 module.exports.run = async (client, message, args) => {
+    if (!muteEnabled) {
+        return console.log("Comando de mute desativado")
+    }
     if (!message.member.permissions.has('KICK_MEMBERS')) return message.channel.send('Voce nao tem permissao suficiente')
     if (!message.guild.me.permissions.has('KICK_MEMBERS')) return message.channel.send('Nao tenho permissao suficiente para isso')
     const rolePosition = message.guild.me.roles.highest.position - 1
