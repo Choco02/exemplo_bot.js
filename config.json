@@ -1,4 +1,5 @@
 {
+    "muteEnabled": false,
     "prefix": "!",
     "token": "token"
 }

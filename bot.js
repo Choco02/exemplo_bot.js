@@ -2,8 +2,16 @@ const { Client, Collection } = require("discord.js")
 const client = new Client()
 const config = require("./config.json")
 const { readdirSync, readFileSync, writeFileSync } = require('fs')
-if (!readdirSync('./').includes('muted.json')) writeFileSync('./muted.json', '{}')
-const muteManager = require('./muteManager')
+if (!readdirSync('./').includes('muted.json') && config.muteEnabled) writeFileSync('./muted.json', '{}')
+if (config.muteEnabled) {
+    try {
+        const muteCheck = require('./muteModule')(client)
+        setInterval(muteCheck, 30 * 1000)
+    }
+    catch(err) {
+        console.log(err.message)
+    }
+}
 let Cake
 const githubUrl = "github.com/Choco02/exemplo_bot.js"
 
@@ -22,53 +30,12 @@ function loadCommands() {
         })
     })
     console.log(`${client.commands.size} comandos carregados`)
-    /*
-    console.log('commands')
-    console.log(client.commands)
-    console.log('\n\n\n')
-    console.log('aliases')
-    console.log(client.aliases)
-    */
-}
-
-function muteCheck() {
-    const muted = JSON.parse(readFileSync('./muted.json'))
-    //console.log(muted)
-    const guilds = Object.keys(muted)
-    // console.log(guilds)
-    const entries = Object.entries(muted)
-    //console.log(entries)
-    //console.log(entries[0][0])
-    
-    guilds.forEach(g => {
-        console.log(g)
-        // console.log(muted[g])
-        muted[g].forEach(async user => {
-            // console.log(user)
-            if (Date.now() > user.time) {
-                console.log('Mute desse usuario ja terminou')
-                try {
-                    const guild = client.guilds.cache.get(g)
-                    const member = await guild.members.fetch(user)
-                    await member.roles.remove(guild.roles.cache.find(r => r.name === "Mute 🤡"))
-                    await guild.channels.cache.get(user.channel).send(`${member} desmutado`)
-                    muteManager.muteDelete(g, user.user)
-                }
-                catch(err) {
-                    console.log(err.stack)
-                }
-            }
-
-        })
-    })
 }
 
 client.on("ready", async () => {
     Cake = await client.users.fetch('551658291474989076')
     console.log(`${client.user.tag} online`)
-    console.log(`Código original criado por ${Cake.tag}`)
     console.log('-'.repeat(30))
-    //client.user.setActivity(`Estou em ${client.guilds.size} servidores e conheço ${client.users.size} pessoas ♡`)
     const activity = [
                     {name: `Estou em ${client.guilds.cache.size} servidores`, type: 1, url: "https://www.twitch.tv/cellbit"},
                     {name: `Dancin Krono Remix 🎧`, type: 2/*, url: "https://www.twitch.tv/cellbit"*/},
@@ -78,12 +45,13 @@ client.on("ready", async () => {
     
     setInterval(function() {
         let random = Math.floor(Math.random() * activity.length)
-        client.user.setPresence({game: activity[random]})
+        client.user.setPresence({ activity: activity[random] })
     }, 15000)
 
     loadCommands()
-    setInterval(muteCheck, 30 * 1000)
+    console.log(`Código original criado por ${Cake.tag}`)
 })
+
 
 
 client.on('message', async message => {
